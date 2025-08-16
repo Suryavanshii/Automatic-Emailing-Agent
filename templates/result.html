@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sending Results</title>
+  <style>
+    body{font-family:system-ui,Arial;margin:30px;max-width:800px}
+    a{color:#111}
+    table{width:100%;border-collapse:collapse;margin-top:16px}
+    th,td{border:1px solid #eee;padding:10px;text-align:left}
+    .ok{color:green;font-weight:600}
+    .fail{color:#b00020;font-weight:600}
+    .card{padding:18px;border:1px solid #eee;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+  </style>
+</head>
+<body>
+  <h2>Results</h2>
+
+  {% if error %}
+    <div class="card">
+      <p><strong>Failed to connect or login:</strong></p>
+      <pre>{{ error }}</pre>
+      <p><a href="/">Back</a></p>
+    </div>
+  {% else %}
+    <div class="card">
+      <p><strong>Subject:</strong> {{ subject or "No Subject" }}</p>
+      <p><strong>Recipients:</strong> {{ count }}</p>
+    </div>
+
+    <table>
+      <tr><th>Email</th><th>Status</th></tr>
+      {% for email, status in results %}
+        <tr>
+          <td>{{ email }}</td>
+          <td class="{{ 'ok' if status=='sent' else 'fail' }}">{{ status }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+    <p><a href="/">Send another batch</a></p>
+  {% endif %}
+</body>
+</html>
